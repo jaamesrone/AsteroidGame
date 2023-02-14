@@ -116,13 +116,7 @@ public class GameManager : Singleton<GameManager> //GameManager talks/inherit to
 
         formatter.Serialize(stream, data);
         stream.Close();
-        /*
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-        }
-        */
-        //SceneManager.LoadScene(0);
+    
     }
 
     public void LoadGame()
@@ -140,8 +134,6 @@ public class GameManager : Singleton<GameManager> //GameManager talks/inherit to
             score = data.score;
             highScore = data.highScore;
             currentLvl = data.currentLvl;
-
-           // SceneManager.LoadScene(currentLvl);
         }
         else
         {

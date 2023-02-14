@@ -417,8 +417,8 @@ MonoBehaviour:
   ballPrefab: {fileID: 7651894310125966173, guid: 03185e7b96ce54c0c968db259b630df7, type: 3}
   spawnPoint: {fileID: 4273981680881888105}
   shootSpeed: 20
-  moveSpeed: 200
-  rotationSpeed: 300
+  moveSpeed: 125
+  rotationSpeed: 150
   axisValue: 0
 --- !u!54 &4869497090262771914
 Rigidbody:

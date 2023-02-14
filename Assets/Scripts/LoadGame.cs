@@ -15,7 +15,6 @@ public class LoadGame : MonoBehaviour
     {
         playButton.onClick.AddListener(LoadAsteroidGame);
         ControlButton.onClick.AddListener(GoToControls);
-//        GoBackButton.onClick.AddListener(GoBack);
     }
 
 
@@ -23,15 +22,6 @@ public class LoadGame : MonoBehaviour
     {
         
         SceneManager.LoadScene(4);
-
-        if (isDead == true)
-        {
-            if (!GameManager.Instance.gameObject.activeSelf && !GameManager.Instance.Player.activeSelf)
-            {
-                GameManager.Instance.gameObject.SetActive(true);
-                GameManager.Instance.Player.SetActive(true);
-            }
-        }
   
     }
 

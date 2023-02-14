@@ -5,19 +5,21 @@ using UnityEngine;
 public class DaddyUFO : MonoBehaviour
 {
     public GameObject laserPrefab; // Prefab of the laser
+
+    GameObject laser;
+
     [SerializeField] private float fireRate = 0.5f; // Time between shots
     [SerializeField] private float speed = 10.0f; // Speed of the enemy ship
     [SerializeField] private float changeDirectionTime = 2.0f; // Time to change direction
     private float nextFireTime = 0.0f; // Next time the laser can fire
     private float changeDirectionTimer = 0.0f; // Timer for changing direction
     private Vector3 movement = Vector3.zero;
-    GameObject laser;
+
 
     void Start()
     {
         // Set the initial movement direction
         movement = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
-        
     }
 
     void Update()
