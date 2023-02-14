@@ -346,6 +346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccf9532e4eb34412288ac73c2b93fe03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cam: {fileID: 1090230169599677911, guid: 8cfba59050be24b20b81f7b3f1cd44a4, type: 3}
   playerControls:
     m_Name: Player Controls
     m_Type: 0
@@ -396,11 +397,28 @@ MonoBehaviour:
       m_Action: Turn Input
       m_Flags: 8
     m_Flags: 0
+  HyperSpace:
+    m_Name: Hyper Space
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 881b087f-21d3-4f53-aefe-7a02e1a40aee
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 8f34c927-c0ce-415a-8c62-0b101e91d7ad
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Hyper Space
+      m_Flags: 0
+    m_Flags: 0
   ballPrefab: {fileID: 7651894310125966173, guid: 03185e7b96ce54c0c968db259b630df7, type: 3}
   spawnPoint: {fileID: 4273981680881888105}
   shootSpeed: 20
-  moveSpeed: 100
-  rotationSpeed: 200
+  moveSpeed: 200
+  rotationSpeed: 300
   axisValue: 0
 --- !u!54 &4869497090262771914
 Rigidbody:

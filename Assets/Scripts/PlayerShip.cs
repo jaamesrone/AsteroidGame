@@ -5,10 +5,16 @@ using UnityEngine.InputSystem;
 
 public class PlayerShip : MonoBehaviour
 {
+    public Camera cam;
+
+    
+
     public InputAction playerControls;
     public InputAction turnInput;
+    public InputAction HyperSpace;
     public GameObject ballPrefab;
     public Transform spawnPoint;
+
     GameObject ball;
 
     public float shootSpeed;
@@ -19,6 +25,10 @@ public class PlayerShip : MonoBehaviour
     private Rigidbody rb;
     private bool moving;
     private bool turning;
+    private bool spaceMode;
+
+    private float screenRight;
+    private float screenTop;
 
     // Start is called before the first frame update
     void Awake()
@@ -30,6 +40,9 @@ public class PlayerShip : MonoBehaviour
     {
         playerControls.Enable();
         turnInput.Enable();
+        HyperSpace.Enable();
+        screenRight = cam.orthographicSize * Screen.width / Screen.height;
+        screenTop = cam.orthographicSize;
     }
 
     private void Update()
@@ -40,12 +53,18 @@ public class PlayerShip : MonoBehaviour
         {
             OnRotate();
         }
+        else if (spaceMode)
+        {
+            Teleport();
+        }
+        
     }
 
     private void CheckKeybinds()
     {
         moving = playerControls.IsPressed();
         turning = turnInput.IsPressed();
+        spaceMode = HyperSpace.IsPressed();
 
     }
 
@@ -73,6 +92,14 @@ public class PlayerShip : MonoBehaviour
         }
     }
 
+    public void Teleport()
+    {
+        float x = Random.Range(-screenRight, screenRight);
+        float y = Random.Range(-screenRight, screenTop);
+        Vector3 newPos = new Vector3(x, y, 10);
+        transform.position = newPos;
+        
+    }
 
     public void OnFire()
     {

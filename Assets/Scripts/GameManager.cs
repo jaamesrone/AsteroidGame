@@ -6,6 +6,24 @@ using UnityEngine.SceneManagement;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
+
+[System.Serializable]
+class GameData
+{
+    public int lives;
+    public int score;
+    public int highScore;
+    public int currentLvl;
+
+    public GameData(int lives, int score, int highScore, int currentLvl)
+    {
+        this.lives = lives;
+        this.score = score;
+        this.highScore = highScore;
+        this.currentLvl = currentLvl;
+    }
+}
+
 public class GameManager : Singleton<GameManager> //GameManager talks/inherit to singleton
 {
     public TextMeshProUGUI scoreUI;
@@ -53,7 +71,7 @@ public class GameManager : Singleton<GameManager> //GameManager talks/inherit to
         SpawnAsteroid();
         nextSpawnTime = Time.time + Random.Range(spawnTimeMin, spawnTimeMax);
         DontDestroyOnLoad(Player);
-        savePath = Application.persistentDataPath + "/gameSave.save";
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Update()
@@ -69,41 +87,28 @@ public class GameManager : Singleton<GameManager> //GameManager talks/inherit to
         }
         else if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
         {
-            Destroy(gameObject);
-            Destroy(Player);
+            gameObject.SetActive(false);
+            Player.SetActive(false);
         }
     }
 
-    [System.Serializable]
-    class GameData
-    {
-        public int lives;
-        public int score;
-        public int highScore;
-        public int currentLvl;
-
-        public GameData(int lives, int score, int highScore, int currentLvl)
-        {
-            this.lives = lives;
-            this.score = score;
-            this.highScore = highScore;
-            this.currentLvl = currentLvl;
-        }
-    }
-
+  
     public void PlayerHurt()
     {
         lives--;
         Player.transform.position = RespawnPoint.position;
         if (lives <= 0)
         {
-            Destroy(Player);
+            gameObject.SetActive(false);
+            Player.SetActive(false);
             SceneManager.LoadScene(3);
+            
         }
     }
 
     public void Save()
     {
+        savePath = Application.persistentDataPath + "/SaveGame";
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream stream = new FileStream(savePath, FileMode.Create);
 
@@ -111,30 +116,32 @@ public class GameManager : Singleton<GameManager> //GameManager talks/inherit to
 
         formatter.Serialize(stream, data);
         stream.Close();
-
-        if (GameManager.Instance != null)
+        /*
+        if (Instance != null)
         {
-            Destroy(GameManager.Instance.gameObject);
+            Destroy(gameObject);
         }
-        SceneManager.LoadScene(0);
+        */
+        //SceneManager.LoadScene(0);
     }
 
     public void LoadGame()
     {
+        savePath = Application.persistentDataPath + "/SaveGame";
         if (File.Exists(GameManager.Instance.savePath))
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(GameManager.Instance.savePath, FileMode.Open);
+            FileStream stream = new FileStream(savePath, FileMode.Open);
 
             GameData data = formatter.Deserialize(stream) as GameData;
             stream.Close();
 
-            GameManager.Instance.lives = data.lives;
-            GameManager.Instance.score = data.score;
-            GameManager.Instance.highScore = data.highScore;
-            GameManager.Instance.currentLvl = data.currentLvl;
+            lives = data.lives;
+            score = data.score;
+            highScore = data.highScore;
+            currentLvl = data.currentLvl;
 
-            SceneManager.LoadScene(GameManager.Instance.currentLvl);
+           // SceneManager.LoadScene(currentLvl);
         }
         else
         {
@@ -172,6 +179,8 @@ public class GameManager : Singleton<GameManager> //GameManager talks/inherit to
         {
             _loadingNextScene = true;
             StartCoroutine(LoadNextSceneAndSpawnAsteroids());
+            currentLvl += 1;
+            UpdateLevel();
         }
     }
 
@@ -282,5 +291,12 @@ public class GameManager : Singleton<GameManager> //GameManager talks/inherit to
     public void AddBabySaucerScore()
     {
         score += BabySaucer;
+    }
+
+    public void Reset()
+    {
+        currentLvl = 0;
+        score = 0;
+        lives = 0;
     }
 }
